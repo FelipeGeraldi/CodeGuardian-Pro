@@ -1,46 +1,27 @@
 
+// This file should be renamed to index.js
+
 import * as THREE from 'three';
-
-type Slide =
-  | { type: 'content'; character: keyof typeof characters; text: string; }
-  | { type: 'quiz'; character: keyof typeof characters; question: string; options: { text: string; correct: boolean }[]; feedbackCorrect: string; feedbackIncorrect: string; explanation?: string };
-
-interface Lesson {
-  id: string;
-  title: string;
-  slides: Slide[];
-  locked: boolean;
-  completed: boolean;
-  icon: string; // Retained for data, not rendered
-}
-
-interface Module {
-  id: string;
-  title: string;
-  lessons: Lesson[];
-  characterIcon: string; // Retained for data, not rendered
-  description: string;
-}
 
 const characters = {
   professorBugsy: {
     name: "Professor Bugsy",
-    emoji: "🐞" // Retained for data, not rendered
+    emoji: "🐞" 
   }
 };
 
 // Initial Data - Based on "Certified Tester Foundation Level Syllabus"
-const syllabusData: Module[] = [
+const syllabusData = [
   {
     id: "ch1",
     title: "Capítulo 1: Fundamentos de Teste",
-    characterIcon: "📚", // Not rendered
+    characterIcon: "📚", 
     description: "Aprenda o básico sobre testes de software.",
     lessons: [
       {
         id: "1.1",
         title: "1.1 O que é teste?",
-        icon: "❓", // Not rendered
+        icon: "❓", 
         locked: false,
         completed: false,
         slides: [
@@ -387,7 +368,7 @@ const syllabusData: Module[] = [
   {
     id: "ch2",
     title: "Capítulo 2: Testes ao longo do Ciclo de Vida",
-    characterIcon: "🔄", // Not rendered
+    characterIcon: "🔄", 
     description: "Descubra como os testes se encaixam no desenvolvimento.",
     lessons: [
         {
@@ -632,7 +613,7 @@ const syllabusData: Module[] = [
   {
     id: "ch3",
     title: "Capítulo 3: Teste Estático",
-    characterIcon: "📄", // Not rendered
+    characterIcon: "📄", 
     description: "Explore testes sem executar o código.",
     lessons: [
         {
@@ -759,7 +740,7 @@ const syllabusData: Module[] = [
   {
     id: "ch4",
     title: "Capítulo 4: Análise e Modelagem de Teste",
-    characterIcon: "🧩", // Not rendered
+    characterIcon: "🧩", 
     description: "Domine as técnicas para criar testes eficazes.",
     lessons: [
         {
@@ -1045,7 +1026,7 @@ const syllabusData: Module[] = [
   {
     id: "ch5",
     title: "Capítulo 5: Gerenciamento das Atividades de Teste",
-    characterIcon: "📋", // Not rendered
+    characterIcon: "📋", 
     description: "Organize e controle o processo de teste.",
     lessons: [
         {
@@ -1352,7 +1333,7 @@ const syllabusData: Module[] = [
   {
     id: "ch6",
     title: "Capítulo 6: Ferramentas de Teste",
-    characterIcon: "🛠️", // Not rendered
+    characterIcon: "🛠️", 
     description: "Conheça as ferramentas que auxiliam nos testes.",
     lessons: [
         {
@@ -1517,15 +1498,15 @@ const syllabusData: Module[] = [
 ];
 
 // App State
-let currentScreen: 'home' | 'lesson' = 'home';
-let currentModuleId: string | null = null;
-let currentLessonId: string | null = null;
-let currentSlideIndex: number = 0;
-let quizAnswered: boolean = false;
-let selectedOptionIndex: number | null = null;
-let isCorrectAnswer: boolean | null = null;
+let currentScreen = 'home';
+let currentModuleId = null;
+let currentLessonId = null;
+let currentSlideIndex = 0;
+let quizAnswered = false;
+let selectedOptionIndex = null;
+let isCorrectAnswer = null;
 
-const appContainer = document.getElementById('app-container')!;
+const appContainer = document.getElementById('app-container');
 
 function saveState() {
     localStorage.setItem('codeGuardianProData', JSON.stringify(syllabusData));
@@ -1537,7 +1518,7 @@ function saveState() {
 function loadState() {
     const savedData = localStorage.getItem('codeGuardianProData');
     if (savedData) {
-        const loadedModules: Module[] = JSON.parse(savedData);
+        const loadedModules = JSON.parse(savedData);
         syllabusData.forEach(module => {
             const loadedModule = loadedModules.find(lm => lm.id === module.id);
             if (loadedModule) {
@@ -1572,14 +1553,14 @@ function renderApp() {
   const titleText = document.createElement('span');
   titleText.className = 'header-title';
   
-  let currentTitle = "CodeGuardian Pro"; // Default App Name
+  let currentTitle = "CodeGuardian Pro"; 
 
   if (currentScreen === 'home') {
     if (currentModuleId) {
         const module = syllabusData.find(m => m.id === currentModuleId);
         if (module) currentTitle = module.title;
     } else {
-        currentTitle = "CodeGuardian Pro"; // Or "Módulos de Aprendizagem"
+        currentTitle = "CodeGuardian Pro"; 
     }
   } else if (currentScreen === 'lesson' && currentModuleId && currentLessonId) {
     const module = syllabusData.find(m => m.id === currentModuleId);
@@ -1598,30 +1579,29 @@ function renderApp() {
     backButton.setAttribute('aria-label', 'Voltar');
     backButton.onclick = () => {
         if (currentScreen === 'lesson') {
-            currentScreen = 'home'; // Go back to lesson list of the current module
+            currentScreen = 'home'; 
             currentSlideIndex = 0;
             quizAnswered = false;
             selectedOptionIndex = null;
             isCorrectAnswer = null;
-        } else if (currentModuleId) { // If on lesson list, go back to module list
+        } else if (currentModuleId) { 
             currentModuleId = null; 
         }
         renderApp();
     };
     header.appendChild(backButton);
-    header.appendChild(titleText); // Title in the middle
+    header.appendChild(titleText); 
 
     const spacer = document.createElement('div');
     spacer.className = 'header-edge-element header-spacer';
-    // Add some content to the spacer to help it take up width, styled to be invisible
-    spacer.innerHTML = '&larr; Voltar'; // Same content as back button for width matching
+    spacer.innerHTML = '&larr; Voltar'; 
     header.appendChild(spacer);
     header.style.justifyContent = 'space-between';
 
 
-  } else { // Main home screen (module list)
+  } else { 
     header.appendChild(titleText);
-    header.style.justifyContent = 'center'; // Center title when no back button
+    header.style.justifyContent = 'center'; 
   }
   
 
@@ -1633,7 +1613,7 @@ function renderApp() {
     if (lesson) {
       renderLessonScreen(lesson);
     } else {
-      currentScreen = 'home'; // Fallback
+      currentScreen = 'home'; 
       renderApp();
     }
   }
@@ -1643,10 +1623,6 @@ function renderApp() {
 function renderHomeScreen() {
   const screen = document.createElement('div');
   screen.className = 'home-screen';
-
-  // Title is now handled by the main header in renderApp when currentModuleId is null
-  // If a module is selected, its title is in the main header.
-  // So, we might not need a separate h2 here, or it should be contextual.
 
   if (!currentModuleId) { 
     const modulesTitle = document.createElement('h2');
@@ -1684,7 +1660,6 @@ function renderHomeScreen() {
       currentModuleId = null; 
       renderApp(); return;
     }
-    // Module title is in the main header, maybe a subtitle for lessons here?
     const lessonsTitle = document.createElement('h3');
     lessonsTitle.className = 'screen-subtitle';
     lessonsTitle.textContent = 'Lições Disponíveis:';
@@ -1734,7 +1709,7 @@ function renderHomeScreen() {
   appContainer.appendChild(screen);
 }
 
-function renderLessonScreen(lesson: Lesson) {
+function renderLessonScreen(lesson) {
   const screen = document.createElement('div');
   screen.className = 'lesson-screen';
 
@@ -1758,12 +1733,12 @@ function renderLessonScreen(lesson: Lesson) {
 
     const navigation = document.createElement('div');
     navigation.className = 'lesson-navigation';
-    const backButtonToLessons = document.createElement('button'); // Renamed for clarity
+    const backButtonToLessons = document.createElement('button'); 
     backButtonToLessons.className = 'nav-button';
     backButtonToLessons.textContent = 'Voltar às Lições';
     backButtonToLessons.onclick = () => {
-        currentScreen = 'home'; // Stays in home, but currentLessonId will be nullified by renderApp logic
-        currentLessonId = null; // Explicitly nullify to return to lesson list
+        currentScreen = 'home'; 
+        currentLessonId = null; 
         currentSlideIndex = 0; 
         quizAnswered = false;
         selectedOptionIndex = null;
@@ -1883,12 +1858,12 @@ function renderLessonScreen(lesson: Lesson) {
     navButton.textContent = 'Concluir Lição';
     navButton.onclick = () => {
       lesson.completed = true;
-      const module = syllabusData.find(m => m.id === currentModuleId!)!;
-      const currentLessonIndex = module.lessons.findIndex(l => l.id === currentLessonId!);
+      const module = syllabusData.find(m => m.id === currentModuleId);
+      const currentLessonIndex = module.lessons.findIndex(l => l.id === currentLessonId);
       if (currentLessonIndex !== -1 && currentLessonIndex < module.lessons.length - 1) {
         module.lessons[currentLessonIndex + 1].locked = false;
       } else if (currentLessonIndex !== -1 && currentLessonIndex === module.lessons.length - 1) {
-        const currentModuleIndex = syllabusData.findIndex(m => m.id === currentModuleId!);
+        const currentModuleIndex = syllabusData.findIndex(m => m.id === currentModuleId);
         if (currentModuleIndex !== -1 && currentModuleIndex < syllabusData.length - 1) {
             const nextModule = syllabusData[currentModuleIndex + 1];
             if (nextModule && nextModule.lessons.length > 0) {
@@ -1898,7 +1873,7 @@ function renderLessonScreen(lesson: Lesson) {
       }
 
       currentScreen = 'home';
-      currentLessonId = null; // Go back to lesson list of current module
+      currentLessonId = null; 
       currentSlideIndex = 0;
       quizAnswered = false;
       selectedOptionIndex = null;
@@ -1913,10 +1888,10 @@ function renderLessonScreen(lesson: Lesson) {
 }
 
 function initThreeJSBackground() {
-    let scene: THREE.Scene;
-    let camera: THREE.PerspectiveCamera;
-    let renderer: THREE.WebGLRenderer;
-    let particles: THREE.Points;
+    let scene;
+    let camera;
+    let renderer;
+    let particles;
     let mouseX = 0;
     let mouseY = 0;
 
@@ -1960,7 +1935,7 @@ function initThreeJSBackground() {
 
     document.addEventListener('mousemove', onDocumentMouseMove, false);
 
-    function onDocumentMouseMove(event: MouseEvent) {
+    function onDocumentMouseMove(event) {
         mouseX = (event.clientX - window.innerWidth / 2) / 4; 
         mouseY = (event.clientY - window.innerHeight / 2) / 4;
     }

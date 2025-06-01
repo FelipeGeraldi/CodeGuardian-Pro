@@ -9,7 +9,7 @@
     --text-color-secondary: #666;
     --header-bg-color: rgba(135, 206, 235, 0.9); /* Sky blue, semi-transparent */
     --header-text-color: white;
-    --home-title-color: #5db0d7; 
+    --home-title-color: #5db0d7;
     --item-border-color: rgba(224, 224, 224, 0.7);
     --item-bg-color: rgba(255, 255, 255, 0.75); /* Semi-transparent */
     --item-hover-shadow-color: rgba(0, 0, 0, 0.08);
@@ -24,10 +24,10 @@
     --quiz-button-hover-bg-color: rgba(224, 243, 251, 0.9);
     --quiz-button-selected-bg-color: #87CEEB;
     --quiz-button-selected-text-color: white;
-    --quiz-button-correct-bg-color: rgba(168, 230, 207, 0.9); 
+    --quiz-button-correct-bg-color: rgba(168, 230, 207, 0.9);
     --quiz-button-correct-border-color: #68bfa0;
     --quiz-button-correct-text-color: #206049;
-    --quiz-button-incorrect-bg-color: rgba(255, 211, 182, 0.9); 
+    --quiz-button-incorrect-bg-color: rgba(255, 211, 182, 0.9);
     --quiz-button-incorrect-border-color: #ffaaa5;
     --quiz-button-incorrect-text-color: #8c463f;
     --feedback-correct-bg-color: rgba(212, 237, 218, 0.9);
@@ -36,7 +36,7 @@
     --feedback-incorrect-bg-color: rgba(248, 215, 218, 0.9);
     --feedback-incorrect-text-color: #721c24;
     --feedback-incorrect-border-color: #f5c6cb;
-    --nav-button-bg-color: #76c7c0; 
+    --nav-button-bg-color: #76c7c0;
     --nav-button-text-color: white;
     --nav-button-hover-bg-color: #62a39d;
     --nav-button-disabled-bg-color: #cccccc;
@@ -54,7 +54,7 @@ body.dark-mode {
     --text-color-secondary: #b0b0b0;
     --header-bg-color: rgba(44, 62, 80, 0.9); /* Darker blue-grey, semi-transparent */
     --header-text-color: #ecf0f1;
-    --home-title-color: #5dade2; 
+    --home-title-color: #5dade2;
     --item-border-color: rgba(51, 51, 51, 0.7);
     --item-bg-color: rgba(42, 42, 42, 0.75); /* Semi-transparent */
     --item-hover-shadow-color: rgba(255, 255, 255, 0.08);
@@ -81,7 +81,7 @@ body.dark-mode {
     --feedback-incorrect-bg-color: rgba(95, 33, 32, 0.9);
     --feedback-incorrect-text-color: #f8d7da;
     --feedback-incorrect-border-color: #721c24;
-    --nav-button-bg-color: #48c9b0; 
+    --nav-button-bg-color: #48c9b0;
     --nav-button-text-color: #121212;
     --nav-button-hover-bg-color: #36a08a;
     --nav-button-disabled-bg-color: #444;
@@ -90,6 +90,9 @@ body.dark-mode {
     --construction-icon-color: #5dade2;
 }
 
+*, *::before, *::after {
+    box-sizing: border-box;
+}
 
 body {
     font-family: var(--font-family);
@@ -101,7 +104,7 @@ body {
     align-items: flex-start;
     min-height: 100vh;
     padding-top: 20px;
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 #three-canvas {
@@ -110,7 +113,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -1; 
+    z-index: -1;
     display: block;
 }
 
@@ -126,8 +129,8 @@ body {
     flex-direction: column;
     min-height: calc(100vh - 40px);
     max-height: calc(100vh - 40px);
-    position: relative; 
-    z-index: 1; 
+    position: relative;
+    z-index: 1;
 }
 
 .header {
@@ -138,8 +141,9 @@ body {
     align-items: center;
     justify-content: space-between; /* Key for 3-element layout */
     width: 100%;
-    box-sizing: border-box;
+    /* box-sizing: border-box; Already applied globally */
     min-height: 50px; /* Ensure header has some height */
+    flex-shrink: 0; /* Prevent header from shrinking */
 }
 
 .header-title {
@@ -162,11 +166,10 @@ body {
 }
 
 .header .back-button {
-    /* position: absolute; REMOVED */
     background: none;
     border: none;
     color: var(--header-text-color);
-    font-size: 0.9em; 
+    font-size: 0.9em;
     font-weight: bold;
     cursor: pointer;
     padding: 8px 12px; /* Make padding consistent */
@@ -183,9 +186,10 @@ body {
 
 .home-screen, .lesson-screen-content {
     padding: 20px;
-    flex-grow: 1;
+    flex-grow: 1; /* For .home-screen inside app-container, and .lesson-screen-content inside .lesson-screen */
     overflow-y: auto;
 }
+
 
 .home-screen .screen-main-title, .home-screen .screen-subtitle {
     color: var(--home-title-color);
@@ -217,7 +221,7 @@ body {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     align-items: center;
-    gap: 10px; 
+    gap: 10px;
 }
 
 .module-item:hover, .lesson-item:hover:not(.locked) {
@@ -230,7 +234,7 @@ body {
     cursor: not-allowed;
     opacity: var(--item-locked-opacity);
 }
-.lesson-item.locked:hover { 
+.lesson-item.locked:hover {
     transform: none;
     box-shadow: none;
 }
@@ -249,13 +253,15 @@ body {
 .lesson-screen {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    flex-grow: 1; /* Takes available space in app-container after header */
+    overflow: hidden; /* Children will handle scrolling */
+    /* height: 100%; REMOVED - was causing the issue */
 }
 
 .character-area {
-    display: flex; 
-    align-items: center; 
-    gap: 0; 
+    display: flex;
+    align-items: center;
+    gap: 0;
     margin-bottom: 20px;
     padding: 10px;
     background-color: var(--character-area-bg-color);
@@ -271,12 +277,12 @@ body {
     font-size: 1.05em;
     line-height: 1.6;
     position: relative;
-    color: var(--text-color-primary); 
+    color: var(--text-color-primary);
 }
-.speech-bubble::before { 
+.speech-bubble::before {
     content: '';
     position: absolute;
-    left: -10px; 
+    left: -10px;
     top: 20px;
     width: 0;
     height: 0;
@@ -369,11 +375,12 @@ body.dark-mode .speech-bubble::before {
 
 
 .lesson-navigation {
-    margin-top: auto;
+    margin-top: auto; /* Pushes to the bottom of the flex container (.lesson-screen) */
     padding: 20px;
-    border-top: 1px solid var(--item-border-color); 
+    border-top: 1px solid var(--item-border-color);
     display: flex;
     justify-content: flex-end;
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
 .nav-button {
@@ -402,7 +409,7 @@ body.dark-mode .speech-bubble::before {
     padding: 30px 20px;
 }
 .lesson-completion-message h3 {
-    color: var(--text-color-primary); 
+    color: var(--text-color-primary);
     font-size: 1.8em;
     margin-bottom: 10px;
 }
@@ -428,6 +435,6 @@ body.dark-mode .speech-bubble::before {
     transition: width 0.3s ease-in-out;
 }
 
-.lesson-screen-content h3 { 
+.lesson-screen-content h3 {
     color: var(--construction-icon-color);
 }

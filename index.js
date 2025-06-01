@@ -1,7 +1,7 @@
 
 // This file should be renamed to index.js
 
-import * as THREE from 'three';
+// import * as THREE from 'three';
 
 const characters = {
   professorBugsy: {
@@ -1888,6 +1888,7 @@ function renderLessonScreen(lesson) {
 }
 
 function initThreeJSBackground() {
+    // Function content is kept for future use, but won't be executed with current changes
     let scene;
     let camera;
     let renderer;
@@ -1963,12 +1964,12 @@ function initThreeJSBackground() {
 loadState();
 renderApp();
 
+/*
 try {
     initThreeJSBackground();
 } catch (error) {
     console.error("Erro ao inicializar o fundo Three.js:", error);
-    // Opcional: pode adicionar uma mensagem na UI para o usuário aqui também
-    // Ex: const errorDiv = document.createElement('div'); ... appContainer.prepend(errorDiv);
 }
+*/
 
 console.log("Script execution reached end.");

@@ -104,19 +104,10 @@ body {
     align-items: flex-start;
     min-height: 100vh;
     padding-top: 20px;
-    overflow: hidden;
+    overflow: auto; /* Changed from hidden to auto, as canvas is removed */
 }
 
-#three-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    display: block;
-}
-
+/* Removed #three-canvas CSS rule */
 
 #app-container {
     width: 100%;
@@ -130,7 +121,7 @@ body {
     min-height: calc(100vh - 40px);
     max-height: calc(100vh - 40px);
     position: relative;
-    z-index: 1;
+    z-index: 1; /* Keep app content above potential future body backgrounds */
 }
 
 .header {
@@ -375,7 +366,7 @@ body.dark-mode .speech-bubble::before {
 
 
 .lesson-navigation {
-    margin-top: auto; /* Pushes to the bottom of the flex container (.lesson-screen) */
+    /* margin-top: auto; /* REMOVED - No longer pushes to the bottom */
     padding: 20px;
     border-top: 1px solid var(--item-border-color);
     display: flex;

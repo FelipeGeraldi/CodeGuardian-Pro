@@ -1,8 +1,6 @@
 
 // This file should be renamed to index.js
 
-// import * as THREE from 'three';
-
 const characters = {
   professorBugsy: {
     name: "Professor Bugsy",
@@ -1887,89 +1885,7 @@ function renderLessonScreen(lesson) {
   appContainer.appendChild(screen);
 }
 
-function initThreeJSBackground() {
-    // Function content is kept for future use, but won't be executed with current changes
-    let scene;
-    let camera;
-    let renderer;
-    let particles;
-    let mouseX = 0;
-    let mouseY = 0;
-
-    const canvas = document.createElement('canvas');
-    canvas.id = 'three-canvas';
-    document.body.prepend(canvas);
-
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 150; 
-
-    renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true }); 
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(0x000000, 0); 
-
-    const particleCount = 7000; 
-    const positions = new Float32Array(particleCount * 3);
-   
-    for (let i = 0; i < particleCount * 3; i++) {
-        positions[i] = (Math.random() - 0.5) * 600; 
-    }
-
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    
-    const isDarkMode = document.body.classList.contains('dark-mode');
-    const particleBaseColor = isDarkMode ? 0xffffff : 0xaaaaaa; 
-
-    const material = new THREE.PointsMaterial({
-        size: 2.2, 
-        color: particleBaseColor,
-        blending: THREE.AdditiveBlending, 
-        depthWrite: false, 
-        transparent: true,
-        sizeAttenuation: true,
-    });
-
-    particles = new THREE.Points(geometry, material);
-    scene.add(particles);
-
-    document.addEventListener('mousemove', onDocumentMouseMove, false);
-
-    function onDocumentMouseMove(event) {
-        mouseX = (event.clientX - window.innerWidth / 2) / 4; 
-        mouseY = (event.clientY - window.innerHeight / 2) / 4;
-    }
-
-    function animate() {
-        requestAnimationFrame(animate);
-        particles.rotation.x += 0.0002; 
-        particles.rotation.y += 0.0003;
-        camera.position.x += (mouseX - camera.position.x) * 0.02; 
-        camera.position.y += (-mouseY - camera.position.y) * 0.02; 
-        camera.lookAt(scene.position);
-        renderer.render(scene, camera);
-    }
-    animate();
-
-    window.addEventListener('resize', onWindowResize, false);
-    function onWindowResize() {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    }
-}
-
 loadState();
 renderApp();
-
-/*
-try {
-    initThreeJSBackground();
-} catch (error) {
-    console.error("Erro ao inicializar o fundo Three.js:", error);
-}
-*/
 
 console.log("Script execution reached end.");
